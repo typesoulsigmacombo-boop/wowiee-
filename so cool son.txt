@@ -65,8 +65,8 @@ end
 ---@module Utility.Profiler
 local Profiler = require("Utility/Profiler")
 
----@module Lycoris
-local Lycoris = require("Lycoris")
+---@module Eclipse
+local Eclipse = require("Lycoris")
 
 ---Find existing instances and initialize the script.
 local function initializeScript()
@@ -10761,12 +10761,12 @@ end
 
 ---Initialize PersistentData module.
 function PersistentData.init()
-	local hasSuccess, hasResult = pcall(memStorageService.HasItem, memStorageService, "LYCORIS_PERSISTENT_DATA")
+	local hasSuccess, hasResult = pcall(memStorageService.HasItem, memStorageService, "ECLIPSE_PERSISTENT_DATA")
 	if not hasSuccess then
 		return hasResult and Logger.warn("(%s) Failed to check for PersistentData snapshot.", tostring(hasResult))
 	end
 
-	local itemSuccess, itemResult = pcall(memStorageService.GetItem, memStorageService, "LYCORIS_PERSISTENT_DATA")
+	local itemSuccess, itemResult = pcall(memStorageService.GetItem, memStorageService, "ECLIPSE_PERSISTENT_DATA")
 	if not itemSuccess then
 		return Logger.warn("(%s) Failed to get PersistentData snapshot", tostring(itemResult))
 	end
@@ -11159,7 +11159,7 @@ __bundle_register("Utility/Serializer", function(require, _LOADED, __bundle_regi
 --[[
  * MessagePack serializer / decode (0.6.1) written in pure Lua 5.3 / Lua 5.4
  * written by Sebastian Steinhauer <s.steinhauer@yahoo.de>
- * modified by the Lycoris Team <discord.gg/lyc>
+ * modified by the Eclipse Team <discord.gg/lyc>
  *
  * This is free and unencumbered software released into the public domain.
  *
@@ -19275,7 +19275,7 @@ local Signal = require("Utility/Signal")
 local Configuration = require("Utility/Configuration")
 
 -- Module filesystem.
-local fs = Filesystem.new("Lycoris-Rewrite-Modules")
+local fs = Filesystem.new("Eclipse-Rewrite-Modules")
 local gfs = Filesystem.new(fs:append("Globals"))
 
 -- Detach table.
@@ -21068,7 +21068,7 @@ local String = require("Utility/String")
 local Serializer = require("Utility/Serializer")
 
 -- Manager filesystem.
-local fs = Filesystem.new("Lycoris-Rewrite-Timings")
+local fs = Filesystem.new("Eclipse-Rewrite-Timings")
 
 -- Current timing save.
 local config = TimingSave.new()
@@ -65450,7 +65450,7 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 	end
 
 	for player, _ in next, PlayerScanning.scanQueue do
-		if shared.Lycoris.dpscanning then
+		if shared.Eclipse.dpscanning then
 			continue
 		end
 
@@ -74733,8 +74733,8 @@ local VisualsTab = require("Menu/VisualsTab")
 ---@module Menu.ExploitTab
 local ExploitTab = require("Menu/ExploitTab")
 
----@module Menu.LycorisTab
-local LycorisTab = require("Menu/LycorisTab")
+---@module Menu.EclipseTab
+local EclipseTab = require("Menu/EclipseTab")
 
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
@@ -74761,7 +74761,7 @@ local renderStepped = Signal.new(runService.RenderStepped)
 local menuMaid = Maid.new()
 
 -- Constants.
-local MENU_TITLE = "Linoria V2 | Deepwoken"
+local MENU_TITLE = "Eclipse | Deepwoken"
 
 if LRM_UserNote then
 	MENU_TITLE = string.format(
@@ -74776,19 +74776,19 @@ function Menu.init()
 	local window = Library:CreateWindow({
 		Title = MENU_TITLE,
 		Center = true,
-		AutoShow = not shared.Lycoris.silent,
+		AutoShow = not shared.Eclipse.silent,
 		TabPadding = 8,
 		MenuFadeTime = 0.0,
 	})
 
 	-- Configure ThemeManager.
 	ThemeManager:SetLibrary(Library)
-	ThemeManager:SetFolder("Lycoris-Rewrite-Themes")
+	ThemeManager:SetFolder("Eclipse-Rewrite-Themes")
 
 	-- Configure SaveManager.
 	SaveManager:SetLibrary(Library)
 	SaveManager:IgnoreThemeSettings()
-	SaveManager:SetFolder("Lycoris-Rewrite-Configs")
+	SaveManager:SetFolder("Eclipse-Rewrite-Configs")
 	SaveManager:SetIgnoreIndexes({
 		"Fly",
 		"NoClip",
@@ -74805,7 +74805,7 @@ function Menu.init()
 	VisualsTab.init(window)
 	AutomationTab.init(window)
 	ExploitTab.init(window)
-	LycorisTab.init(window)
+	EclipseTab.init(window)
 
 	-- Last update.
 	local lastUpdate = os.clock()
@@ -74919,9 +74919,9 @@ end
 return Menu
 
 end)
-__bundle_register("Menu/LycorisTab", function(require, _LOADED, __bundle_register, __bundle_modules)
--- LycorisTab module.
-local LycorisTab = {}
+__bundle_register("Menu/EclipseTab", function(require, _LOADED, __bundle_register, __bundle_modules)
+-- EclipseTab module.
+local EclipseTab = {}
 
 ---@module GUI.ThemeManager
 local ThemeManager = require("GUI/ThemeManager")
@@ -74937,15 +74937,15 @@ local Logger = require("Utility/Logger")
 
 ---Initialize Cheat Settings section.
 ---@param groupbox table
-function LycorisTab.initCheatSettingsSection(groupbox)
+function EclipseTab.initCheatSettingsSection(groupbox)
 	groupbox:AddButton("Toggle Silent Mode", function()
 		if not isfile or not delfile or not writefile then
 			return
 		end
 
-		shared.Lycoris.silent = not shared.Lycoris.silent
+		shared.Eclipse.silent = not shared.Eclipse.silent
 
-		if not shared.Lycoris.silent then
+		if not shared.Eclipse.silent then
 			Logger.notify("Silent mode was disabled.")
 		end
 
@@ -74954,7 +74954,7 @@ function LycorisTab.initCheatSettingsSection(groupbox)
 		else
 			writefile(
 				"smarker.txt",
-				"Hello, if you're reading this, that means you have Lycoris-Rewrite (Deepwoken) silent mode turned on. Deleting this file will turn it off."
+				"Hello, if you're reading this, that means you have Eclipse-Rewrite (Deepwoken) silent mode turned on. Deleting this file will turn it off."
 			)
 		end
 	end)
@@ -74964,9 +74964,9 @@ function LycorisTab.initCheatSettingsSection(groupbox)
 			return
 		end
 
-		shared.Lycoris.dpscanning = not shared.Lycoris.dpscanning
+		shared.Eclipse.dpscanning = not shared.Eclipse.dpscanning
 
-		if shared.Lycoris.dpscanning then
+		if shared.Eclipse.dpscanning then
 			Logger.notify("Player scanning was disabled.")
 		else
 			Logger.notify("Player scanning was enabled.")
@@ -74977,7 +74977,7 @@ function LycorisTab.initCheatSettingsSection(groupbox)
 		else
 			writefile(
 				"dpscanning.txt",
-				"Hello, if you're reading this, that means you have Lycoris-Rewrite (Deepwoken) player scanning turned off. Deleting this file will turn it on."
+				"Hello, if you're reading this, that means you have Eclipse-Rewrite (Deepwoken) player scanning turned off. Deleting this file will turn it on."
 			)
 		end
 	end)
@@ -74987,9 +74987,9 @@ function LycorisTab.initCheatSettingsSection(groupbox)
 			return
 		end
 
-		shared.Lycoris.norpc = not shared.Lycoris.norpc
+		shared.Eclipse.norpc = not shared.Eclipse.norpc
 
-		if not shared.Lycoris.norpc then
+		if not shared.Eclipse.norpc then
 			Logger.notify("Bloxstrap RPC was enabled.")
 		else
 			Logger.notify("Bloxstrap RPC was disabled.")
@@ -75000,19 +75000,19 @@ function LycorisTab.initCheatSettingsSection(groupbox)
 		else
 			writefile(
 				"norpc.txt",
-				"Hello, if you're reading this, that means you have Lycoris-Rewrite (Deepwoken) Bloxstrap RPC turned off. Deleting this file will turn it on."
+				"Hello, if you're reading this, that means you have Eclipse-Rewrite (Deepwoken) Bloxstrap RPC turned off. Deleting this file will turn it on."
 			)
 		end
 	end)
 
 	groupbox:AddButton("Unload Cheat", function()
-		shared.Lycoris.detach()
+		shared.Eclipse.detach()
 	end)
 end
 
 ---Initialize UI Settings section.
 ---@param groupbox table
-function LycorisTab.initUISettingsSection(groupbox)
+function EclipseTab.initUISettingsSection(groupbox)
 	groupbox:AddSlider("NotificationScale", {
 		Text = "Notification Scale",
 		Min = 50,
@@ -75061,21 +75061,21 @@ function LycorisTab.initUISettingsSection(groupbox)
 end
 
 ---Initialize tab.
-function LycorisTab.init(window)
+function EclipseTab.init(window)
 	-- Create tab.
 	local tab = window:AddTab("Settings") -- dont change the name, it's more confusing if its named that way
 
 	-- Initialize sections.
-	LycorisTab.initCheatSettingsSection(tab:AddLeftGroupbox("Cheat Settings"))
-	LycorisTab.initUISettingsSection(tab:AddRightGroupbox("UI Settings"))
+	EclipseTab.initCheatSettingsSection(tab:AddLeftGroupbox("Cheat Settings"))
+	EclipseTab.initUISettingsSection(tab:AddRightGroupbox("UI Settings"))
 
 	-- Configure SaveManager & ThemeManager.
 	ThemeManager:ApplyToTab(tab)
 	SaveManager:BuildConfigSection(tab)
 end
 
--- Return LycorisTab module.
-return LycorisTab
+-- Return EclipseTab module.
+return EclipseTab
 
 end)
 __bundle_register("GUI/SaveManager", function(require, _LOADED, __bundle_register, __bundle_modules)
@@ -75103,7 +75103,7 @@ return LPH_NO_VIRTUALIZE(function()
 
 	local SaveManager = {}
 	do
-		SaveManager.Folder = "Lycoris-Rewrite-Configs"
+		SaveManager.Folder = "Eclipse-Rewrite-Configs"
 		SaveManager.Ignore = {}
 		SaveManager.Parser = {
 			Toggle = {
@@ -75482,7 +75482,7 @@ return LPH_NO_VIRTUALIZE(function()
 	local httpService = game:GetService("HttpService")
 	local ThemeManager = {}
 	do
-		ThemeManager.Folder = "Lycoris-Rewrite-Themes"
+		ThemeManager.Folder = "Eclipse-Rewrite-Themes"
 		ThemeManager.Library = nil
 		ThemeManager.BuiltInThemes = {
 			["Default"] = {
@@ -79363,7 +79363,7 @@ local onIndex = LPH_NO_VIRTUALIZE(function(...)
 
 	---@note: Patch out InputClient detection for __index hooking to prevent annoying errors.
 	if typeof(args[2]) == "table" then
-		return error("InputClient - Lycoris On Top")
+		return error("InputClient - Eclipse On Top")
 	end
 
 	if Spoofing.force or not Configuration.expectToggleValue("InfoSpoofing") then
