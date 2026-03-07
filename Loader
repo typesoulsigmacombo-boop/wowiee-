@@ -12,7 +12,7 @@ if not getgenv().script_key then
 end
 
 local response = request({
-    Url = "https://keyauth.win/api/1.0/",
+    Url = "https://keyauth.cc/api/1.0/",
     Method = "POST",
     Headers = {
         ["Content-Type"] = "application/x-www-form-urlencoded"
