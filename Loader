@@ -1,4 +1,4 @@
-getgenv().script_key = "PUT_YOUR_KEY_HERE"
+getgenv().script_key = "KEYAUTH-ZBQX3Z-3HKCPT-GI5E5L-OLL3IN-F665QF-V4ARXW"
 
 local HttpService = game:GetService("HttpService")
 
