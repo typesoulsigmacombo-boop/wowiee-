@@ -1,17 +1,23 @@
 local HttpService = game:GetService("HttpService")
 
+-- KeyAuth info
 local name = "Pinkcat's Application"
 local ownerid = "NkAnQStqe4"
 local secret = "3814b93e26a321963df5f7f1fb59dfcf4887e1639a959e1bb832cbcc1890c0fa"
 local version = "1.0"
 
-local request = syn and syn.request or http_request or request
+-- executor request support
+local request = syn and syn.request or http_request or fluxus and fluxus.request or request
+
+if not request then
+    game.Players.LocalPlayer:Kick("Executor does not support HTTP requests")
+end
 
 if not getgenv().script_key then
     game.Players.LocalPlayer:Kick("No key provided")
 end
 
--- INIT
+-- INIT REQUEST
 local init = request({
     Url = "https://keyauth.cc/api/1.0/",
     Method = "POST",
@@ -25,7 +31,18 @@ local init = request({
         "&ver="..HttpService:UrlEncode(version)
 })
 
-local initdata = HttpService:JSONDecode(init.Body)
+if not init or not init.Body then
+    game.Players.LocalPlayer:Kick("KeyAuth init request failed")
+end
+
+local initdata
+local success, err = pcall(function()
+    initdata = HttpService:JSONDecode(init.Body)
+end)
+
+if not success then
+    game.Players.LocalPlayer:Kick("KeyAuth returned invalid response")
+end
 
 if not initdata.success then
     game.Players.LocalPlayer:Kick(initdata.message or "KeyAuth init failed")
@@ -45,11 +62,22 @@ local response = request({
         "&name="..HttpService:UrlEncode(name)..
         "&ownerid="..HttpService:UrlEncode(ownerid)..
         "&sessionid="..HttpService:UrlEncode(sessionid)..
-        "&key="..HttpService:UrlEncode(getgenv().script_key).. 
+        "&key="..HttpService:UrlEncode(getgenv().script_key)..
         "&hwid="..HttpService:UrlEncode(game:GetService("RbxAnalyticsService"):GetClientId())
 })
 
-local data = HttpService:JSONDecode(response.Body)
+if not response or not response.Body then
+    game.Players.LocalPlayer:Kick("KeyAuth license request failed")
+end
+
+local data
+local success2, err2 = pcall(function()
+    data = HttpService:JSONDecode(response.Body)
+end)
+
+if not success2 then
+    game.Players.LocalPlayer:Kick("KeyAuth returned invalid license response")
+end
 
 if data.success then
     local script = game:HttpGet("https://raw.githubusercontent.com/typesoulsigmacombo-boop/wowiee-/main/main.lua")
