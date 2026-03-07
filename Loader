@@ -1,4 +1,4 @@
-getgenv().script_key = "KEYAUTH-ZBQX3Z-3HKCPT-GI5E5L-OLL3IN-F665QF-V4ARXW"
+getgenv().script_key = ""
 
 local KeyAuth = loadstring(game:HttpGet("https://raw.githubusercontent.com/KeyAuth/KeyAuth-Lua-Example/main/KeyAuth.lua"))()
 
