@@ -9,12 +9,16 @@ if not getgenv().script_key then
     game.Players.LocalPlayer:Kick("No key provided")
 end
 
-local req = game:HttpGet(
-    "https://keyauth.win/api/1.2/?type=license&name="..name..
-    "&ownerid="..ownerid..
-    "&key="..getgenv().script_key..
-    "&ver="..version
-)
+local url =
+"https://keyauth.win/api/1.2/?type=license"
+.."&name="..name
+.."&ownerid="..ownerid
+.."&secret="..secret
+.."&key="..getgenv().script_key
+.."&ver="..version
+
+local req = game:HttpGet(url)
+print(req)
 
 local data = HttpService:JSONDecode(req)
 
@@ -22,5 +26,5 @@ if data.success then
     local script = game:HttpGet("https://raw.githubusercontent.com/typesoulsigmacombo-boop/wowiee-/main/main.lua")
     loadstring(script)()
 else
-    game.Players.LocalPlayer:Kick("Invalid Key")
+    game.Players.LocalPlayer:Kick(data.message or "Invalid Key")
 end
