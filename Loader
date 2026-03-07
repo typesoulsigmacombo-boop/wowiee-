@@ -11,6 +11,29 @@ if not getgenv().script_key then
     game.Players.LocalPlayer:Kick("No key provided")
 end
 
+-- INIT
+local init = request({
+    Url = "https://keyauth.cc/api/1.0/",
+    Method = "POST",
+    Headers = {
+        ["Content-Type"] = "application/x-www-form-urlencoded"
+    },
+    Body =
+        "type=init"..
+        "&name="..HttpService:UrlEncode(name)..
+        "&ownerid="..HttpService:UrlEncode(ownerid)..
+        "&ver="..HttpService:UrlEncode(version)
+})
+
+local initdata = HttpService:JSONDecode(init.Body)
+
+if not initdata.success then
+    game.Players.LocalPlayer:Kick(initdata.message or "KeyAuth init failed")
+end
+
+local sessionid = initdata.sessionid
+
+-- LICENSE CHECK
 local response = request({
     Url = "https://keyauth.cc/api/1.0/",
     Method = "POST",
@@ -21,9 +44,8 @@ local response = request({
         "type=license"..
         "&name="..HttpService:UrlEncode(name)..
         "&ownerid="..HttpService:UrlEncode(ownerid)..
-        "&secret="..HttpService:UrlEncode(secret)..
-        "&key="..HttpService:UrlEncode(getgenv().script_key)..
-        "&ver="..HttpService:UrlEncode(version)..
+        "&sessionid="..HttpService:UrlEncode(sessionid)..
+        "&key="..HttpService:UrlEncode(getgenv().script_key).. 
         "&hwid="..HttpService:UrlEncode(game:GetService("RbxAnalyticsService"):GetClientId())
 })
 
