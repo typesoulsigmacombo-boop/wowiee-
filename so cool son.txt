@@ -1,3 +1,6 @@
+if not getgenv().script_key then
+    game:Shutdown()
+end
 -- Bundled by luabundle {"luaVersion":"5.1","version":"1.6.0"}
 local __bundle_require, __bundle_loaded, __bundle_register, __bundle_modules = (function(superRequire)
 	local loadingPlaceholder = {[{}] = true}
