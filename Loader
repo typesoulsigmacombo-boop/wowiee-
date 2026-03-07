@@ -1,0 +1,19 @@
+getgenv().script_key = "KEYAUTH-ZBQX3Z-3HKCPT-GI5E5L-OLL3IN-F665QF-V4ARXW"
+
+local KeyAuth = loadstring(game:HttpGet("https://raw.githubusercontent.com/KeyAuth/KeyAuth-Lua-Example/main/KeyAuth.lua"))()
+
+local app = KeyAuth:new({
+    Name = "Eclipse",
+    OwnerId = "NkAnQStqe4",
+    Secret = "3814b93e26a321963df5f7f1fb59dfcf4887e1639a959e1bb832cbcc1890c0fa",
+    Version = "1.0"
+})
+
+local success, data = app:license(getgenv().script_key)
+
+if success then
+    local script = game:HttpGet("https://raw.githubusercontent.com/typesoulsigmacombo-boop/wowiee-/main/main.lua")
+    loadstring(script)()
+else
+    game.Players.LocalPlayer:Kick("Invalid Key")
+end
