@@ -5,6 +5,8 @@ local ownerid = "NkAnQStqe4"
 local secret = "3814b93e26a321963df5f7f1fb59dfcf4887e1639a959e1bb832cbcc1890c0fa"
 local version = "1.0"
 
+local request = syn and syn.request or http_request or request
+
 if not getgenv().script_key then
     game.Players.LocalPlayer:Kick("No key provided")
 end
@@ -17,11 +19,12 @@ local response = request({
     },
     Body =
         "type=license"..
-        "&name="..name..
-        "&ownerid="..ownerid..
-        "&secret="..secret..
-        "&key="..getgenv().script_key..
-        "&ver="..version
+        "&name="..HttpService:UrlEncode(name)..
+        "&ownerid="..HttpService:UrlEncode(ownerid)..
+        "&secret="..HttpService:UrlEncode(secret)..
+        "&key="..HttpService:UrlEncode(getgenv().script_key)..
+        "&ver="..HttpService:UrlEncode(version)..
+        "&hwid="..HttpService:UrlEncode(game:GetService("RbxAnalyticsService"):GetClientId())
 })
 
 local data = HttpService:JSONDecode(response.Body)
