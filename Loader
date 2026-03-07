@@ -1,17 +1,22 @@
-getgenv().script_key = ""
+getgenv().script_key = "PUT_YOUR_KEY_HERE"
 
-local KeyAuth = loadstring(game:HttpGet("https://raw.githubusercontent.com/KeyAuth/KeyAuth-Lua-Example/main/KeyAuth.lua"))()
+local HttpService = game:GetService("HttpService")
 
-local app = KeyAuth:new({
-    Name = "Eclipse",
-    OwnerId = "NkAnQStqe4",
-    Secret = "3814b93e26a321963df5f7f1fb59dfcf4887e1639a959e1bb832cbcc1890c0fa",
-    Version = "1.0"
-})
+local name = "Eclipse"
+local ownerid = "NkAnQStqe4"
+local secret = "3814b93e26a321963df5f7f1fb59dfcf4887e1639a959e1bb832cbcc1890c0fa"
+local version = "1.0"
 
-local success, data = app:license(getgenv().script_key)
+local req = game:HttpGet(
+    "https://keyauth.win/api/1.2/?type=license&name="..name..
+    "&ownerid="..ownerid..
+    "&key="..getgenv().script_key..
+    "&ver="..version
+)
 
-if success then
+local data = HttpService:JSONDecode(req)
+
+if data.success then
     local script = game:HttpGet("https://raw.githubusercontent.com/typesoulsigmacombo-boop/wowiee-/main/main.lua")
     loadstring(script)()
 else
